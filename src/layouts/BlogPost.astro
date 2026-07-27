@@ -1,5 +1,4 @@
 ---
-import { Image } from 'astro:assets';
 import type { CollectionEntry } from 'astro:content';
 import BaseHead from '../components/BaseHead.astro';
 import Footer from '../components/Footer.astro';
@@ -8,79 +7,83 @@ import Header from '../components/Header.astro';
 
 type Props = CollectionEntry<'blog'>['data'];
 
-const { title, description, pubDate, updatedDate, heroImage } = Astro.props;
+const { title, description, pubDate, updatedDate } = Astro.props;
 ---
 
-<html lang="en">
+<html lang="ko">
 	<head>
 		<BaseHead title={title} description={description} />
-		<style>
-			main {
-				width: calc(100% - 2em);
-				max-width: 100%;
-				margin: 0;
-			}
-			.hero-image {
-				width: 100%;
-			}
-			.hero-image img {
-				display: block;
-				margin: 0 auto;
-				border-radius: 12px;
-				box-shadow: var(--box-shadow);
-			}
-			.prose {
-				width: 720px;
-				max-width: calc(100% - 2em);
-				margin: auto;
-				padding: 1em;
-				color: rgb(var(--gray-dark));
-			}
-			.title {
-				margin-bottom: 1em;
-				padding: 1em 0;
-				text-align: center;
-				line-height: 1;
-			}
-			.title h1 {
-				margin: 0 0 0.5em 0;
-			}
-			.date {
-				margin-bottom: 0.5em;
-				color: rgb(var(--gray));
-			}
-			.last-updated-on {
-				font-style: italic;
-			}
-		</style>
 	</head>
 
 	<body>
 		<Header />
 		<main>
 			<article>
-				<div class="hero-image">
-					{heroImage && <Image width={1020} height={510} src={heroImage} alt="" />}
-				</div>
-				<div class="prose">
-					<div class="title">
-						<div class="date">
-							<FormattedDate date={pubDate} />
-							{
-								updatedDate && (
-									<div class="last-updated-on">
-										Last updated on <FormattedDate date={updatedDate} />
-									</div>
-								)
-							}
-						</div>
-						<h1>{title}</h1>
-						<hr />
-					</div>
+				<header class="post-header">
+					<h1>{title}</h1>
+					<p class="meta">
+						<FormattedDate date={pubDate} />
+						{
+							updatedDate && (
+								<span class="updated">
+									· updated <FormattedDate date={updatedDate} />
+								</span>
+							)
+						}
+						<span id="reading-time"></span>
+					</p>
+				</header>
+
+				<div class="prose post-body">
 					<slot />
 				</div>
+
+				<footer class="post-footer">
+					<a href="/blog">← All posts</a>
+				</footer>
 			</article>
 		</main>
 		<Footer />
 	</body>
 </html>
+
+<style>
+	.post-header {
+		margin-bottom: 2.4rem;
+	}
+	.post-header h1 {
+		font-size: 1.75rem;
+		line-height: 1.35;
+		margin-bottom: 0.8rem;
+	}
+	.meta {
+		font-family: var(--mono);
+		font-size: 0.78rem;
+		color: var(--faint);
+		margin: 0;
+	}
+	.post-footer {
+		border-top: 1px solid var(--border);
+		margin-top: 3.5rem;
+		padding-top: 1.6rem;
+	}
+	.post-footer a {
+		font-family: var(--mono);
+		font-size: 0.82rem;
+		color: var(--muted);
+	}
+	.post-footer a:hover {
+		color: var(--text);
+	}
+</style>
+
+<script is:inline>
+	(function () {
+		var el = document.getElementById('reading-time');
+		var body = document.querySelector('.post-body');
+		if (!el || !body) return;
+		var chars = (body.textContent || '').replace(/\s+/g, '').length;
+		var min = Math.max(1, Math.round(chars / 500));
+		el.textContent = ' · ' + min + ' min read';
+	})();
+</script>

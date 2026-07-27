@@ -4,14 +4,10 @@ interface Props {
 }
 
 const { date } = Astro.props;
+const pad = (n: number) => String(n).padStart(2, '0');
+const ymd = `${date.getFullYear()}-${pad(date.getMonth() + 1)}-${pad(date.getDate())}`;
 ---
 
-<time datetime={date.toISOString()}>
-	{
-		date.toLocaleDateString('en-us', {
-			year: 'numeric',
-			month: 'short',
-			day: 'numeric',
-		})
-	}
+<time datetime={ymd}>
+	{ymd}
 </time>

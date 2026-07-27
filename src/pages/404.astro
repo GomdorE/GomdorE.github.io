@@ -1,0 +1,46 @@
+---
+import BaseHead from '../components/BaseHead.astro';
+import Footer from '../components/Footer.astro';
+import Header from '../components/Header.astro';
+import { SITE_TITLE } from '../consts';
+---
+
+<!doctype html>
+<html lang="ko">
+	<head>
+		<BaseHead title={`404 — ${SITE_TITLE}`} description="페이지를 찾을 수 없습니다." />
+	</head>
+	<body>
+		<Header />
+		<main>
+			<p class="code">404</p>
+			<h1>페이지를 찾을 수 없습니다</h1>
+			<p class="desc">주소가 바뀌었거나, 삭제된 페이지일 수 있어요.</p>
+			<p><a class="home" href="/">← 홈으로 돌아가기</a></p>
+		</main>
+		<Footer />
+	</body>
+</html>
+
+<style>
+	main {
+		padding-top: 5rem;
+	}
+	.code {
+		font-family: var(--mono);
+		font-size: 0.85rem;
+		color: var(--accent);
+		margin-bottom: 0.5rem;
+	}
+	.desc {
+		color: var(--muted);
+	}
+	.home {
+		font-family: var(--mono);
+		font-size: 0.85rem;
+		color: var(--muted);
+	}
+	.home:hover {
+		color: var(--text);
+	}
+</style>
