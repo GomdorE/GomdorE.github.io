@@ -4,7 +4,7 @@ const today = new Date();
 
 <footer>
 	<div class="inner">
-		<span>© {today.getFullYear()} gomdore</span>
+		<span>© {today.getFullYear()} gomdore · 정보는 확인하고, 광고는 구분합니다.</span>
 		<span class="links">
 			<a href="/privacy">개인정보처리방침</a>
 			<a href="/rss.xml">RSS</a>
@@ -17,7 +17,7 @@ const today = new Date();
 		border-top: 1px solid var(--border);
 	}
 	.inner {
-		width: 42rem;
+		width: 68rem;
 		max-width: calc(100% - 2.5rem);
 		margin: 0 auto;
 		padding: 1.6rem 0 2.4rem;
@@ -38,5 +38,12 @@ const today = new Date();
 	}
 	.links a:hover {
 		color: var(--text);
+	}
+	@media (max-width: 640px) {
+		.inner {
+			align-items: flex-start;
+			flex-direction: column;
+			gap: 0.7rem;
+		}
 	}
 </style>

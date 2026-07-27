@@ -212,6 +212,26 @@ p {
 	color: var(--faint);
 }
 
+.summary {
+	background: color-mix(in srgb, var(--accent) 6%, var(--bg));
+	border: 1px solid color-mix(in srgb, var(--accent) 24%, var(--border));
+	border-radius: 10px;
+	padding: 1.15rem 1.3rem 0.95rem;
+	margin: 0 0 2.4rem;
+}
+.summary h2 {
+	font-family: var(--mono);
+	font-size: 0.78rem;
+	letter-spacing: 0.08em;
+	margin: 0 0 0.65rem;
+}
+.summary ul {
+	margin-bottom: 0;
+}
+.summary li {
+	font-size: 0.94rem;
+}
+
 /* 본문 이미지와 캡션.
    마크다운에서 이미지 바로 다음 줄에 *기울임* 으로 한 문장을 적으면
    그게 캡션이 된다. 한 문단 안에 들어가므로 아래 규칙이 잡아낸다.

@@ -6,10 +6,10 @@ import HeaderLink from './HeaderLink.astro';
 <header>
 	<div class="inner">
 		<a class="brand" href="/">{SITE_TITLE}<span class="cursor" aria-hidden="true">_</span></a>
-		<nav>
-			<HeaderLink href="/">Home</HeaderLink>
-			<HeaderLink href="/blog">Posts</HeaderLink>
-			<HeaderLink href="/about">About</HeaderLink>
+		<nav aria-label="주요 메뉴">
+			<HeaderLink href="/">홈</HeaderLink>
+			<HeaderLink href="/blog">전체 글</HeaderLink>
+			<HeaderLink href="/about">운영 원칙</HeaderLink>
 		</nav>
 	</div>
 </header>
@@ -19,7 +19,7 @@ import HeaderLink from './HeaderLink.astro';
 		border-bottom: 1px solid var(--border);
 	}
 	.inner {
-		width: 42rem;
+		width: 68rem;
 		max-width: calc(100% - 2.5rem);
 		margin: 0 auto;
 		padding: 1.4rem 0;

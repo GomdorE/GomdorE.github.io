@@ -1,7 +1,10 @@
 // 사이트 전역 데이터.
 export const SITE_TITLE = 'gomdore.log';
 export const SITE_DESCRIPTION =
-	'직접 써보고 정리합니다. 게임, 화장품, 생활용품 — 사기 전에 알았으면 좋았을 것들.';
+	'게임, 디지털 도구, 생활 정보를 직접 확인하고 핵심만 정리하는 실용 가이드.';
+export const SITE_TAGLINE = '찾는 답을 빠르게, 판단할 근거는 충분하게.';
+export const SITE_AUTHOR = 'gomdore';
+export const SITE_URL = 'https://blog.igomdori.com';
 
 // 문의용 이메일. 개인정보처리방침과 About 에 노출된다.
 // 애드센스는 연락 수단을 요구하므로 신청 전에 반드시 채울 것.

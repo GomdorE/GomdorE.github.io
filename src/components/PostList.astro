@@ -1,5 +1,6 @@
 ---
 import type { CollectionEntry } from 'astro:content';
+import { categoryLabel } from '../categories';
 
 interface Props {
 	/** 최신순으로 정렬해서 넘길 것. */
@@ -46,6 +47,7 @@ const md = (d: Date) => `${pad(d.getMonth() + 1)}-${pad(d.getDate())}`;
 								{md(post.data.pubDate)}
 							</time>
 							<span class="body">
+								<span class="kicker">{categoryLabel(post.data.category)}</span>
 								<span class="title">{post.data.title}</span>
 								{post.data.description && (
 									<span class="desc">{post.data.description}</span>
@@ -100,6 +102,13 @@ const md = (d: Date) => `${pad(d.getMonth() + 1)}-${pad(d.getDate())}`;
 		color: var(--text);
 		font-weight: 500;
 		transition: color 0.15s ease;
+	}
+	.group .kicker {
+		display: block;
+		font-family: var(--mono);
+		font-size: 0.68rem;
+		color: var(--accent);
+		margin-bottom: 0.1rem;
 	}
 	.group a:hover .title {
 		color: var(--accent);
