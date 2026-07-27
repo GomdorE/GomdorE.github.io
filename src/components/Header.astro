@@ -34,7 +34,7 @@ import HeaderLink from './HeaderLink.astro';
 		font-weight: 700;
 		color: var(--text);
 	}
-	/* .cursor 는 global.css 에 공용으로 두었다 — 404 에서도 같은 걸 쓴다. */
+	/* .cursor 스타일은 global.css 에 모아두었다. */
 	nav {
 		display: flex;
 		gap: 1.4rem;
@@ -74,3 +74,23 @@ import HeaderLink from './HeaderLink.astro';
 		}
 	}
 </style>
+
+<script is:inline>
+	// 스크롤하는 동안 <html> 에 표식을 달아, 커서 깜빡임을 잠시 멈춘다.
+	// 멈추는 것 자체보다, 멈췄다가 다시 깜빡이기 시작하는 순간이 핵심이다.
+	(function () {
+		var root = document.documentElement;
+		var idle;
+		addEventListener(
+			'scroll',
+			function () {
+				root.classList.add('is-reading');
+				clearTimeout(idle);
+				idle = setTimeout(function () {
+					root.classList.remove('is-reading');
+				}, 900);
+			},
+			{ passive: true },
+		);
+	})();
+</script>
