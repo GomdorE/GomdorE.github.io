@@ -78,6 +78,9 @@ h6 {
 	font-weight: 700;
 	letter-spacing: -0.015em;
 	margin: 0 0 0.6rem;
+	/* 제목이 두 줄로 넘어갈 때 마지막 줄에 한 단어만 남는 걸 막는다.
+	   한글은 word-break: keep-all 과 같이 쓰면 특히 차이가 크다. */
+	text-wrap: balance;
 }
 
 h1 {
@@ -101,6 +104,13 @@ a {
 	text-decoration: none;
 }
 
+/* 키보드로 이동할 때만 보이는 초점 표시. 마우스 클릭에는 안 뜬다. */
+:focus-visible {
+	outline: 2px solid var(--accent);
+	outline-offset: 3px;
+	border-radius: 2px;
+}
+
 p {
 	margin: 0 0 1.25em;
 }
@@ -121,6 +131,8 @@ p {
 }
 .prose p {
 	margin-bottom: 1.5em;
+	/* 문단 끝에 외톨이 단어가 남지 않게 줄바꿈을 다듬는다. */
+	text-wrap: pretty;
 }
 /* 밑줄을 배경 그라디언트로 그려 두께 변화가 부드럽게 이어지도록 함
    (text-decoration-thickness 는 transition 이 안 먹는다) */
@@ -232,6 +244,52 @@ time,
 	}
 	main {
 		padding: 2rem 0 3rem;
+	}
+}
+
+/* ── 모션 ─────────────────────────────────────────────────────────
+   원칙: 짧게(0.5s 이내), 작게(6px), 감속 곡선.
+   요소가 날아드는 게 아니라 제자리에 내려앉는 느낌으로 통일한다.
+
+   머리말과 꼬리말에는 일부러 적용하지 않는다. 틀은 고정돼 있고
+   내용만 자리를 잡는 대비가 페이지 이동을 자연스럽게 만든다.
+   (정적 사이트라 링크를 누를 때마다 이 애니메이션이 다시 재생된다.
+    별도의 페이지 전환 효과를 넣지 않아도 그 역할을 대신한다.)
+*/
+@keyframes settle {
+	from {
+		opacity: 0;
+		transform: translateY(6px);
+	}
+}
+
+@media (prefers-reduced-motion: no-preference) {
+	.settle {
+		animation: settle 0.5s cubic-bezier(0.22, 1, 0.36, 1) both;
+		animation-delay: var(--d, 0ms);
+	}
+}
+
+/* 인쇄에는 애니메이션이 적용되지 않는다. 등장 효과에 기대어 숨겨둔
+   요소가 그대로 빈 자리로 찍히지 않도록 최종 상태를 강제한다. */
+@media print {
+	.settle {
+		animation: none !important;
+		opacity: 1 !important;
+		transform: none !important;
+	}
+}
+
+/* 움직임을 줄이도록 설정한 사용자에게는 전부 즉시 표시한다.
+   .settle 규칙 자체가 위 미디어쿼리 안에만 있으므로 요소는 그냥 보인다. */
+@media (prefers-reduced-motion: reduce) {
+	*,
+	*::before,
+	*::after {
+		animation-duration: 0.01ms !important;
+		animation-iteration-count: 1 !important;
+		transition-duration: 0.01ms !important;
+		scroll-behavior: auto !important;
 	}
 }
 

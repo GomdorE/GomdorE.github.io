@@ -13,10 +13,14 @@ import { SITE_TITLE } from '../consts';
 	<body>
 		<Header />
 		<main>
-			<p class="code">404</p>
-			<h1>페이지를 찾을 수 없습니다</h1>
-			<p class="desc">주소가 바뀌었거나, 삭제된 페이지일 수 있어요.</p>
-			<p><a class="home" href="/">← 홈으로 돌아가기</a></p>
+			<p class="code settle">404</p>
+			<h1 class="settle" style="--d: 70ms">페이지를 찾을 수 없습니다</h1>
+			<p class="desc settle" style="--d: 140ms">
+				주소가 바뀌었거나, 삭제된 페이지일 수 있어요.
+			</p>
+			<p class="settle" style="--d: 210ms">
+				<a class="home" href="/"><span class="arrow" aria-hidden="true">←</span> 홈으로 돌아가기</a>
+			</p>
 		</main>
 		<Footer />
 	</body>
@@ -42,5 +46,12 @@ import { SITE_TITLE } from '../consts';
 	}
 	.home:hover {
 		color: var(--text);
+	}
+	.home .arrow {
+		display: inline-block;
+		transition: transform 0.2s cubic-bezier(0.22, 1, 0.36, 1);
+	}
+	.home:hover .arrow {
+		transform: translateX(-3px);
 	}
 </style>

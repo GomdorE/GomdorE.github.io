@@ -21,7 +21,7 @@ const fmt = (d: Date) => `${d.getFullYear()}-${pad(d.getMonth() + 1)}-${pad(d.ge
 	<body>
 		<Header />
 		<main>
-			<section class="intro">
+			<section class="intro settle">
 				<h1>gomdore</h1>
 				<p class="bio">
 					느린 기록을 쌓아가는 공간입니다.<br />
@@ -30,11 +30,11 @@ const fmt = (d: Date) => `${d.getFullYear()}-${pad(d.getMonth() + 1)}-${pad(d.ge
 			</section>
 
 			<section class="recent">
-				<h2 class="label">Recent posts</h2>
+				<h2 class="label settle" style="--d: 80ms">Recent posts</h2>
 				<ul class="list">
 					{
-						posts.map((post) => (
-							<li>
+						posts.map((post, i) => (
+							<li class="settle" style={`--d: ${150 + i * 45}ms`}>
 								<a href={`/blog/${post.id}/`}>
 									<span class="t">{post.data.title}</span>
 									<span class="leader" aria-hidden="true" />
@@ -44,7 +44,9 @@ const fmt = (d: Date) => `${d.getFullYear()}-${pad(d.getMonth() + 1)}-${pad(d.ge
 						))
 					}
 				</ul>
-				<p class="more"><a href="/blog">View all posts →</a></p>
+				<p class="more settle" style={`--d: ${150 + posts.length * 45}ms`}>
+					<a href="/blog">View all posts <span class="arrow" aria-hidden="true">→</span></a>
+				</p>
 			</section>
 		</main>
 		<Footer />
@@ -92,11 +94,21 @@ const fmt = (d: Date) => `${d.getFullYear()}-${pad(d.getMonth() + 1)}-${pad(d.ge
 		min-width: 2rem;
 		border-bottom: 1px dotted var(--border);
 		transform: translateY(-0.25em);
+		transition: border-color 0.2s ease;
 	}
 	.list time {
 		font-size: 0.78rem;
 		color: var(--faint);
 		flex-shrink: 0;
+		transition: color 0.2s ease;
+	}
+	/* 제목만 반응하면 줄이 끊겨 보인다. 점선과 날짜까지 같이 살아나야
+	   한 줄 전체가 하나의 대상으로 읽힌다. */
+	.list a:hover .leader {
+		border-bottom-color: var(--faint);
+	}
+	.list a:hover time {
+		color: var(--muted);
 	}
 	.more {
 		margin-top: 1.6rem;
@@ -108,6 +120,13 @@ const fmt = (d: Date) => `${d.getFullYear()}-${pad(d.getMonth() + 1)}-${pad(d.ge
 	}
 	.more a:hover {
 		color: var(--text);
+	}
+	.more .arrow {
+		display: inline-block;
+		transition: transform 0.2s cubic-bezier(0.22, 1, 0.36, 1);
+	}
+	.more a:hover .arrow {
+		transform: translateX(3px);
 	}
 
 	@media (max-width: 640px) {

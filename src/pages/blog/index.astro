@@ -17,6 +17,10 @@ for (const post of posts) {
 }
 const years = [...byYear.keys()].sort((a, b) => b - a);
 
+// 연도별로 나눠 그리지만, 등장 순서는 목록 전체를 기준으로 매긴다.
+// 그래야 연도가 바뀌어도 위에서 아래로 한 줄기로 이어져 보인다.
+const order = new Map(posts.map((p, i) => [p.id, i]));
+
 const pad = (n: number) => String(n).padStart(2, '0');
 const md = (d: Date) => `${pad(d.getMonth() + 1)}-${pad(d.getDate())}`;
 ---
@@ -29,16 +33,21 @@ const md = (d: Date) => `${pad(d.getMonth() + 1)}-${pad(d.getDate())}`;
 	<body>
 		<Header />
 		<main>
-			<h1>Posts</h1>
-			<p class="count">{posts.length} posts</p>
+			<h1 class="settle">Posts</h1>
+			<p class="count settle" style="--d: 70ms">{posts.length} posts</p>
 
 			{
 				years.map((year) => (
 					<section class="group">
-						<h2 class="label">{year}</h2>
+						<h2
+								class="label settle"
+								style={`--d: ${120 + (order.get(byYear.get(year)![0].id) ?? 0) * 40}ms`}
+							>
+								{year}
+							</h2>
 						<ul>
 							{byYear.get(year)!.map((post) => (
-								<li>
+								<li class="settle" style={`--d: ${180 + (order.get(post.id) ?? 0) * 40}ms`}>
 									<a href={`/blog/${post.id}/`}>
 										<time datetime={post.data.pubDate.toISOString()}>
 											{md(post.data.pubDate)}
@@ -96,6 +105,10 @@ const md = (d: Date) => `${pad(d.getMonth() + 1)}-${pad(d.getDate())}`;
 		color: var(--faint);
 		flex-shrink: 0;
 		width: 3.1rem;
+		transition: color 0.2s ease;
+	}
+	.group a:hover time {
+		color: var(--muted);
 	}
 	.group .body {
 		min-width: 0;
