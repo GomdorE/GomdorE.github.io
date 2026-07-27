@@ -16,7 +16,14 @@ const { title, description, pubDate, updatedDate, category, heroImage } =
 
 <html lang="ko">
 	<head>
-		<BaseHead title={title} description={description} />
+		<BaseHead
+			title={title}
+			description={description}
+			image={heroImage}
+			type="article"
+			pubDate={pubDate}
+			updatedDate={updatedDate}
+		/>
 	</head>
 
 	<body>
