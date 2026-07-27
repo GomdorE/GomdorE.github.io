@@ -196,6 +196,31 @@ p {
 	color: var(--faint);
 }
 
+/* 본문 이미지와 캡션.
+   마크다운에서 이미지 바로 다음 줄에 *기울임* 으로 한 문장을 적으면
+   그게 캡션이 된다. 한 문단 안에 들어가므로 아래 규칙이 잡아낸다.
+
+	 ![대체 텍스트](../../assets/사진.jpg)
+	 *캡션으로 쓸 문장*
+*/
+.prose p:has(> img) {
+	margin: 2.2em 0;
+}
+.prose p > img {
+	display: block;
+	border-radius: 8px;
+}
+.prose p > img + em {
+	display: block;
+	margin-top: 0.7em;
+	font-style: normal;
+	font-family: var(--mono);
+	font-size: 0.74rem;
+	line-height: 1.6;
+	color: var(--faint);
+	text-align: center;
+}
+
 table {
 	width: 100%;
 	border-collapse: collapse;

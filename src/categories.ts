@@ -9,6 +9,7 @@
 export const CATEGORY_LABELS: Record<string, string> = {
 	note: '기록',
 	work: '일',
+	game: '게임',
 };
 
 export const categoryLabel = (slug: string) => CATEGORY_LABELS[slug] ?? slug;

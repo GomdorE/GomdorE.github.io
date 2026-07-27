@@ -1,4 +1,5 @@
 ---
+import { Image } from 'astro:assets';
 import type { CollectionEntry } from 'astro:content';
 import BaseHead from '../components/BaseHead.astro';
 import Footer from '../components/Footer.astro';
@@ -9,7 +10,8 @@ import { categoryLabel } from '../categories';
 type Props = CollectionEntry<'blog'>['data'];
 
 // About 페이지도 이 레이아웃을 쓰는데 거기엔 카테고리가 없다. 그래서 선택값으로 받는다.
-const { title, description, pubDate, updatedDate, category } = Astro.props;
+const { title, description, pubDate, updatedDate, category, heroImage } =
+	Astro.props;
 ---
 
 <html lang="ko">
@@ -46,7 +48,21 @@ const { title, description, pubDate, updatedDate, category } = Astro.props;
 					</p>
 				</header>
 
-				<div class="prose post-body settle" style="--d: 90ms">
+				{
+						heroImage && (
+							<Image
+								class="hero settle"
+								style="--d: 60ms"
+								src={heroImage}
+								alt=""
+								widths={[480, 800, 1344]}
+								sizes="(max-width: 42rem) 100vw, 42rem"
+								loading="eager"
+							/>
+						)
+					}
+
+					<div class="prose post-body settle" style="--d: 90ms">
 					<slot />
 				</div>
 
@@ -73,6 +89,15 @@ const { title, description, pubDate, updatedDate, category } = Astro.props;
 		font-size: 0.78rem;
 		color: var(--faint);
 		margin: 0;
+	}
+	.hero {
+		display: block;
+		width: 100%;
+		height: auto;
+		aspect-ratio: 2 / 1;
+		object-fit: cover;
+		border-radius: 8px;
+		margin-bottom: 2.4rem;
 	}
 	.cat {
 		color: var(--accent);
