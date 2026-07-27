@@ -6,6 +6,7 @@ const today = new Date();
 	<div class="inner">
 		<span>© {today.getFullYear()} gomdore</span>
 		<span class="links">
+			<a href="/privacy">개인정보처리방침</a>
 			<a href="/rss.xml">RSS</a>
 		</span>
 	</div>
@@ -27,8 +28,13 @@ const today = new Date();
 		font-size: 0.78rem;
 		color: var(--faint);
 	}
+	.links {
+		display: flex;
+		gap: 1rem;
+	}
 	.links a {
 		color: var(--faint);
+		transition: color 0.15s ease;
 	}
 	.links a:hover {
 		color: var(--text);

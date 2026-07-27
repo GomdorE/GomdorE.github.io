@@ -4,6 +4,22 @@
   라이트·다크 자동 전환.
  */
 
+/*
+  글꼴은 외부 CDN 이 아니라 이 저장소에서 직접 내보낸다.
+  외부에서 불러오면 (1) 첫 화면이 뜨는 속도가 그쪽 서버에 묶이고,
+  (2) 방문자 IP 가 제3자에게 넘어가며, (3) 그 서버가 죽으면 같이 깨진다.
+  둘 다 OFL-1.1 라이선스라 직접 호스팅해도 된다.
+
+  Pretendard 는 '동적 서브셋'을 쓴다. 한글 전체를 담으면 2MB 지만,
+  이 방식은 92개 조각으로 나뉘어 있어 브라우저가 실제로 쓰인 글자의
+  조각만 골라 받는다. JetBrains Mono 는 날짜·라벨에만 쓰므로
+  라틴 문자만 있으면 되고, 세 굵기를 합쳐도 64KB 정도다.
+*/
+@import 'pretendard/dist/web/variable/pretendardvariable-dynamic-subset.css';
+@import '@fontsource/jetbrains-mono/latin-400.css';
+@import '@fontsource/jetbrains-mono/latin-500.css';
+@import '@fontsource/jetbrains-mono/latin-700.css';
+
 :root {
 	color-scheme: light dark;
 	--bg: #fdfdfb;
@@ -219,6 +235,89 @@ p {
 	line-height: 1.6;
 	color: var(--faint);
 	text-align: center;
+}
+
+/* 유튜브 임베드.
+   글에 이 한 줄만 적으면 된다.  <div class="yt" data-id="영상ID"></div>
+
+   iframe 을 바로 넣으면 재생하지도 않은 영상 때문에 페이지가 수백 KB 무거워지고
+   속도 점수가 떨어진다. 그래서 썸네일만 깔아두고, 누를 때 재생기를 불러온다.
+   누르기 전에는 유튜브 쿠키도 심기지 않는다. */
+.yt {
+	position: relative;
+	aspect-ratio: 16 / 9;
+	margin: 2.2em 0;
+	border-radius: 8px;
+	overflow: hidden;
+	background: var(--bg-code);
+}
+.yt iframe {
+	display: block;
+	width: 100%;
+	height: 100%;
+	border: 0;
+}
+.yt-play {
+	display: block;
+	width: 100%;
+	height: 100%;
+	padding: 0;
+	border: 0;
+	cursor: pointer;
+	background: none;
+}
+.yt-play img {
+	display: block;
+	width: 100%;
+	height: 100%;
+	object-fit: cover;
+	border-radius: 0;
+}
+/* 재생 표시. 유튜브 로고를 흉내 내지 않고 사이트 강조색을 쓴다. */
+.yt-icon {
+	position: absolute;
+	inset: 0;
+	margin: auto;
+	width: 3.6rem;
+	height: 3.6rem;
+	border-radius: 50%;
+	background: var(--accent);
+	transition:
+		transform 0.2s cubic-bezier(0.22, 1, 0.36, 1),
+		opacity 0.2s ease;
+	opacity: 0.92;
+}
+.yt-icon::after {
+	content: '';
+	position: absolute;
+	inset: 0;
+	margin: auto;
+	width: 0;
+	height: 0;
+	border-style: solid;
+	border-width: 0.55rem 0 0.55rem 0.9rem;
+	border-color: transparent transparent transparent var(--bg);
+	transform: translateX(0.12rem);
+}
+.yt-play:hover .yt-icon {
+	transform: scale(1.06);
+	opacity: 1;
+}
+
+/* 제휴 링크 표기.
+   쿠팡 파트너스 같은 제휴 링크가 들어간 글은 대가를 받는다는 사실을
+   눈에 띄는 위치에 밝혀야 한다(공정위 추천·보증 심사지침).
+   그래서 본문 맨 위에, 옅게가 아니라 읽히는 밝기로 넣는다. */
+.affiliate-notice {
+	font-size: 0.85rem;
+	line-height: 1.7;
+	color: var(--body);
+	background: var(--bg-code);
+	border: 1px solid var(--border);
+	border-left: 3px solid var(--accent);
+	border-radius: 6px;
+	padding: 0.85rem 1.1rem;
+	margin-bottom: 2rem;
 }
 
 table {

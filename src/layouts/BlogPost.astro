@@ -10,8 +10,15 @@ import { categoryLabel } from '../categories';
 type Props = CollectionEntry<'blog'>['data'];
 
 // About 페이지도 이 레이아웃을 쓰는데 거기엔 카테고리가 없다. 그래서 선택값으로 받는다.
-const { title, description, pubDate, updatedDate, category, heroImage } =
-	Astro.props;
+const {
+	title,
+	description,
+	pubDate,
+	updatedDate,
+	category,
+	heroImage,
+	affiliate,
+} = Astro.props;
 ---
 
 <html lang="ko">
@@ -69,9 +76,17 @@ const { title, description, pubDate, updatedDate, category, heroImage } =
 						)
 					}
 
-					<div class="prose post-body settle" style="--d: 90ms">
-					<slot />
-				</div>
+				<div class="prose post-body settle" style="--d: 90ms">
+						{
+							affiliate && (
+								<p class="affiliate-notice">
+									이 글에는 쿠팡 파트너스 링크가 포함되어 있으며, 이를 통해 일정액의
+									수수료를 제공받습니다. 구매자에게 추가로 부과되는 비용은 없습니다.
+								</p>
+							)
+						}
+						<slot />
+					</div>
 
 				<footer class="post-footer settle" style="--d: 180ms">
 					<a href="/blog"><span class="arrow" aria-hidden="true">←</span> All posts</a>
