@@ -22,3 +22,6 @@ pnpm-debug.log*
 
 # jetbrains setting folder
 .idea/
+
+# 로컬 전용 MCP 설정 (내 PC 경로가 들어감)
+.mcp.json

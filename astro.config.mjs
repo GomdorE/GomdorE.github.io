@@ -6,7 +6,7 @@ import { defineConfig } from 'astro/config';
 
 // https://astro.build/config
 export default defineConfig({
-	site: 'https://gomdore.github.io',
+	site: 'https://blog.igomdori.com',
 	integrations: [mdx(), sitemap()],
 	markdown: {
 		shikiConfig: {

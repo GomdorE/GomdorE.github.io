@@ -122,14 +122,18 @@ p {
 .prose p {
 	margin-bottom: 1.5em;
 }
+/* 밑줄을 배경 그라디언트로 그려 두께 변화가 부드럽게 이어지도록 함
+   (text-decoration-thickness 는 transition 이 안 먹는다) */
 .prose a {
 	color: var(--accent);
-	text-decoration: underline;
-	text-decoration-thickness: 1px;
-	text-underline-offset: 3px;
+	text-decoration: none;
+	background: linear-gradient(currentColor, currentColor) 0 100% / 100% 1px
+		no-repeat;
+	padding-bottom: 0.14em;
+	transition: background-size 0.2s ease;
 }
 .prose a:hover {
-	text-decoration-thickness: 2px;
+	background-size: 100% 2px;
 }
 .prose h2 {
 	margin-top: 2.2em;
