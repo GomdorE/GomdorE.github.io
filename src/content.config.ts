@@ -12,6 +12,9 @@ const blog = defineCollection({
 			description: z.string(),
 			// Transform string to Date object
 			pubDate: z.coerce.date(),
+			// 분류. 안 적으면 '기록'으로 들어가므로 빠뜨려도 빌드가 깨지지 않는다.
+			// 쓸 수 있는 값은 src/categories.ts 참고.
+			category: z.string().default('note'),
 			updatedDate: z.coerce.date().optional(),
 			heroImage: z.optional(image()),
 		}),

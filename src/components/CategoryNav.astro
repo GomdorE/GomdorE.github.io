@@ -1,0 +1,71 @@
+---
+import { getCollection } from 'astro:content';
+import { categoryLabel } from '../categories';
+
+interface Props {
+	/** 지금 보고 있는 카테고리 슬러그. 전체 목록에서는 비워둔다. */
+	current?: string;
+}
+
+const { current } = Astro.props;
+
+// 메뉴는 categories.ts 가 아니라 실제 글에서 만든다.
+// 그래야 새 카테고리로 글을 하나 쓰면 메뉴에 저절로 생긴다.
+const posts = await getCollection('blog');
+const counts = new Map<string, number>();
+for (const post of posts) {
+	counts.set(post.data.category, (counts.get(post.data.category) ?? 0) + 1);
+}
+const cats = [...counts.entries()].sort(
+	(a, b) => b[1] - a[1] || a[0].localeCompare(b[0]),
+);
+---
+
+<nav class="cats" aria-label="카테고리">
+	<a href="/blog" class:list={['chip', { on: !current }]}>
+		All <span class="n">{posts.length}</span>
+	</a>
+	{
+		cats.map(([slug, n]) => (
+			<a
+				href={`/blog/category/${slug}/`}
+				class:list={['chip', { on: current === slug }]}
+			>
+				{categoryLabel(slug)} <span class="n">{n}</span>
+			</a>
+		))
+	}
+</nav>
+
+<style>
+	.cats {
+		display: flex;
+		flex-wrap: wrap;
+		gap: 0.3rem 1rem;
+		margin-bottom: 1.6rem;
+	}
+	.chip {
+		font-family: var(--mono);
+		font-size: 0.78rem;
+		color: var(--faint);
+		/* 밑줄을 배경으로 그려야 자라나는 연출이 가능하다. */
+		background: linear-gradient(var(--accent), var(--accent)) 0 100% / 0 2px
+			no-repeat;
+		padding-bottom: 4px;
+		transition:
+			color 0.15s ease,
+			background-size 0.25s cubic-bezier(0.22, 1, 0.36, 1);
+	}
+	.chip:hover {
+		color: var(--text);
+		background-size: 100% 2px;
+	}
+	.chip.on {
+		color: var(--text);
+		background-size: 100% 2px;
+	}
+	/* 글 개수는 한 단계 더 옅게 — 이름이 먼저 읽혀야 한다. */
+	.n {
+		opacity: 0.55;
+	}
+</style>

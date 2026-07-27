@@ -33,6 +33,7 @@ src/content/blog/slow-morning.md   →   https://blog.igomdori.com/blog/slow-mor
 title: '천천히 시작하는 아침'
 description: '서두르지 않는 하루가 어떤 차이를 만드는지에 대해.'
 pubDate: 'Jul 27 2026'
+category: note
 ---
 
 여기서부터 본문을 쓴다. 그냥 평소처럼 쓰면 된다.
@@ -47,6 +48,7 @@ pubDate: 'Jul 27 2026'
 | `title` | O | 글 제목. 목록과 브라우저 탭에 나온다. |
 | `description` | O | 한 줄 요약. 목록에서 제목 아래, 그리고 검색 결과에 노출된다. |
 | `pubDate` | O | 발행일. `'Jul 27 2026'` 또는 `'2026-07-27'` 형식. |
+| `category` | | 분류. 안 적으면 `note`(기록)로 들어간다. 아래 3번 참고. |
 | `updatedDate` | | 수정일. 넣으면 글 상단에 `updated`로 표시된다. |
 | `heroImage` | | 대표 이미지. 안 넣어도 된다. |
 
@@ -95,7 +97,42 @@ npm run dev
 
 ---
 
-## 3. 명령어 모음
+## 3. 카테고리로 분류하기
+
+글이 쌓이면 한 줄로 주르륵 늘어서 찾기 어려워진다. 그래서 글마다 분류를 붙일 수 있게 해뒀다.
+
+### 새 분류 만들기
+
+**1)** 글의 머리말에 영문 슬러그를 적는다. 주소가 `/blog/category/game/` 이 되기 때문에 영문으로 쓴다. 한글로 적으면 주소가 `%EA%B2%8C...` 처럼 깨져 보인다.
+
+```markdown
+category: game
+```
+
+**2)** `src/categories.ts` 에 한 줄 추가해서 화면에 보일 이름을 정한다.
+
+```ts
+export const CATEGORY_LABELS: Record<string, string> = {
+	note: '기록',
+	work: '일',
+	game: '게임',      // ← 추가
+	beauty: '화장품',  // ← 추가
+};
+```
+
+그게 전부다. push하면 `게임` 페이지가 저절로 생기고, Posts 페이지 위쪽 분류 줄에도 자동으로 추가된다. 목록은 `categories.ts` 가 아니라 **실제 쓴 글에서 만들어지기 때문에**, 글이 하나도 없는 분류는 메뉴에 나타나지 않는다.
+
+2번을 깜빡해도 사이트는 정상 동작한다. 다만 이름이 `game` 처럼 슬러그 그대로 보인다.
+
+### 알아둘 것
+
+- 글 하나에 분류는 하나다. 여러 개를 달고 싶으면 말해달라 — 태그 방식으로 바꿔야 한다.
+- 분류를 안 적은 글은 전부 `기록`으로 들어간다.
+- 분류 이름(슬러그)을 바꾸면 그 주소로 걸어둔 링크가 끊긴다. 초반에 정해두는 게 좋다.
+
+---
+
+## 4. 명령어 모음
 
 | 명령어 | 하는 일 |
 |---|---|
@@ -108,7 +145,7 @@ npm run dev
 
 ---
 
-## 4. 배포가 돌아가는 방식
+## 5. 배포가 돌아가는 방식
 
 ```
 글 작성  →  git push  →  Cloudflare가 자동 감지
@@ -127,7 +164,7 @@ npm run dev
 
 ---
 
-## 5. 최초 1회 세팅 (Cloudflare Pages)
+## 6. 최초 1회 세팅 (Cloudflare Pages)
 
 아직 안 했다면 이 순서대로 하면 된다. **한 번만 하면 끝이고, 그 뒤로는 push만 하면 된다.**
 
@@ -152,7 +189,7 @@ Node 버전은 건드릴 필요 없다. `.nvmrc` 가 알아서 처리한다.
 
 ---
 
-## 6. 주소를 바꾸고 싶을 때
+## 7. 주소를 바꾸고 싶을 때
 
 도메인을 바꾸면 [`astro.config.mjs`](astro.config.mjs) 의 `site` 값도 **반드시 같이** 바꿔야 한다.
 
@@ -164,7 +201,7 @@ site: 'https://blog.igomdori.com',
 
 ---
 
-## 7. 안 될 때
+## 8. 안 될 때
 
 **글을 올렸는데 사이트에 안 보인다**
 Cloudflare 대시보드의 프로젝트 → Deployments 에서 빌드가 실패했는지 본다. 대부분 원인은 맨 위 `---` 블록의 형식 오류다. 특히 `title` 에 따옴표를 안 씌운 경우.
@@ -180,19 +217,21 @@ Node 버전이 22.12 미만이면 안 된다. `node -v` 로 확인한다.
 
 ---
 
-## 8. 폴더 구조
+## 9. 폴더 구조
 
 ```
 src/
 ├── content/blog/     ← 글은 전부 여기. 평소 건드리는 건 여기뿐이다.
+├── categories.ts     ← 분류 이름. 새 카테고리 만들 때 여기 한 줄 추가.
 ├── pages/
-│   ├── index.astro       홈 (소개 + 최근 글)
-│   ├── about.astro       소개 페이지
-│   ├── blog/index.astro  전체 글 목록
-│   └── 404.astro         없는 주소로 들어왔을 때
+│   ├── index.astro                     홈 (소개 + 최근 글)
+│   ├── about.astro                     소개 페이지
+│   ├── blog/index.astro                전체 글 목록
+│   ├── blog/category/[category].astro  분류별 목록 (자동 생성)
+│   └── 404.astro                       없는 주소로 들어왔을 때
 ├── layouts/          글 페이지의 틀
-├── components/       머리말, 꼬리말 등 공통 조각
-└── styles/global.css 전체 디자인
+├── components/       머리말, 꼬리말, 글 목록 등 공통 조각
+└── styles/global.css 전체 디자인 + 등장 애니메이션
 public/               파비콘 등 그대로 복사되는 파일
 ```
 

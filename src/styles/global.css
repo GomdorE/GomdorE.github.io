@@ -41,6 +41,9 @@
 
 html {
 	scrollbar-gutter: stable;
+	/* 스크롤바도 본문의 일부처럼 보이게 얇고 옅게. 강조색은 쓰지 않는다. */
+	scrollbar-width: thin;
+	scrollbar-color: var(--border) transparent;
 }
 
 body {
@@ -113,6 +116,29 @@ a {
 
 p {
 	margin: 0 0 1.25em;
+}
+
+/* 터미널 커서. 사이트 이름이 .log 인 데서 나오는 이 사이트의 유일한
+   장식이다. 여러 곳에 뿌리지 않는다 — 하나뿐일 때만 서명으로 읽힌다. */
+.cursor {
+	color: var(--accent);
+}
+
+@media (prefers-reduced-motion: no-preference) {
+	.cursor {
+		animation: blink 1.2s step-end infinite;
+	}
+	/* 터미널은 입력 중일 때 커서가 깜빡임을 멈추고 고정된다.
+	   링크에 마우스를 올린 순간을 '입력 중'으로 빌려 쓴다. */
+	a:hover > .cursor {
+		animation: none;
+	}
+}
+
+@keyframes blink {
+	50% {
+		opacity: 0;
+	}
 }
 
 /* 모노 라벨 유틸리티 — 섹션 제목, 메타 정보 */
